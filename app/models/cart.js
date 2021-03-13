@@ -26,7 +26,7 @@ User.belongsTo(Cart, {
 
 Cart.belongsTo(Products, {
   foreignKey: "product_id",
-  as: "user",
+  as: "products",
 });
 
 module.exports = Cart;

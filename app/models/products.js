@@ -37,4 +37,12 @@ const Products = sequelize.define(
   }
 );
 
+Products.findBySKU = async (sku) => {
+  return await Products.findOne({
+    where: {
+      sku,
+    },
+  });
+};
+
 module.exports = Products;

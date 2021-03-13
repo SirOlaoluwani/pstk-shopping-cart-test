@@ -1,4 +1,5 @@
 const User = require("../models/user");
+const { body: bodyVal, validationResult } = require("express-validator");
 
 const index = async (req, res) => {
   try {
@@ -23,7 +24,7 @@ const store = async (req, res) => {
   } catch (error) {
     res.status(400).send({
       message: error.toString(),
-      data: error,
+      error: error,
     });
   }
 };

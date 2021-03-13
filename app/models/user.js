@@ -22,4 +22,12 @@ const User = sequelize.define(
   }
 );
 
+User.findUserByEmail = async (email) => {
+  return await User.findOne({
+    where: {
+      email,
+    },
+  });
+};
+
 module.exports = User;

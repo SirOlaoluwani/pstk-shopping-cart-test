@@ -18,4 +18,12 @@ const Category = sequelize.define(
   }
 );
 
+Category.findBySlug = async (slug) => {
+  return await Category.findOne({
+    where: {
+      slug,
+    },
+  });
+};
+
 module.exports = Category;

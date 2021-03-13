@@ -16,7 +16,7 @@ const index = async (req, res) => {
     }
   } catch (error) {
     res.status(400).send({
-      error: error.toString(),
+      message: error.toString(),
     });
   }
 };
@@ -27,38 +27,23 @@ const add = async (req, res) => {
     const result = await sequelize.transaction(async (t) => {
       const body = req.body;
 
-      //check if the product exists before inserting to cart table
-      const productExist = await Products.findByPk(body.product_id);
+      const cart = await Cart.findOrCreate({
+        where: {
+          user_id: userId,
+          product_id: body.product_id,
+        },
+        defaults: {
+          quantity: body.quantity,
+          user_id: userId,
+          product_id: body.product_id,
+        },
+        transaction: t,
+      });
 
-      if (productExist) {
-        //If product does not exist in the cart add to cart
-        const cart = await Cart.findOrCreate(
-          // {
-          //   quantity: body.quantity,
-          //   user_id: userId,
-          //   product_id: body.product_id,
-          // },
-          {
-            where: {
-              user_id: userId,
-              product_id: body.product_id,
-            },
-            defaults: {
-              quantity: body.quantity,
-              user_id: userId,
-              product_id: body.product_id,
-            },
-            transaction: t,
-          }
-        );
-
-        if (cart[1]) {
-          return cart[0];
-        } else {
-          throw new Error("The selected product already exists in the cart!");
-        }
+      if (cart[1]) {
+        return cart[0];
       } else {
-        throw new Error("The selected product does not exist!");
+        throw new Error("The product already exists in the cart!");
       }
     });
 
@@ -71,7 +56,7 @@ const add = async (req, res) => {
   } catch (error) {
     res.status(400).send({
       message: error.toString(),
-      data: error,
+      error,
     });
   }
 };
@@ -92,13 +77,11 @@ const update = async (req, res) => {
       res
         .status(200)
         .send({ message: "cart updated successfully", data: selectedCart });
-    } else {
-      throw new Error("Cart not found");
     }
   } catch (error) {
     res.status(400).send({
       message: error.toString(),
-      data: error,
+      error,
     });
   }
 };
@@ -118,13 +101,13 @@ const destroy = async (req, res) => {
         .status(200)
         .send({ message: "Product removed from cart successfully" });
     } else {
-      throw new Error("Cart not found");
+      throw new Error("Product not removed from cart");
     }
   } catch (error) {
     //send back error response
     res.status(400).send({
       message: error.toString(),
-      data: error,
+      error,
     });
   }
 };
