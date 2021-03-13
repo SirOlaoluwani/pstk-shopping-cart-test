@@ -10,9 +10,17 @@ To build a small shopping cart application. Assume that you have a list of produ
 
 The project is structured with an MVC pattern in mind.
 
+## Installation
+
+```
+yarn install
+cp .env.example .env
+yarn start
+```
+
 ## How does it work?
 
-For the sake of this simple application, the following activities can take place while working with this API
+Since this is a simple application, the following actions can be performed with this API
 
 - Create user
 - List users
@@ -28,14 +36,15 @@ For the sake of this simple application, the following activities can take place
 - remove product from cart
 - edit product quantity in cart
 
-Note - There are no forms of authentication as this is just a simple test application and does not require any form of authentication to manage.
+There are no forms of authentication as this is just a simple test application and does not require any form of authentication to manage.
 
-## Using the API
+## Things to know
 
-1. Create demo user
-2. Create atleast one category
-3. Create atleast one product
-4. Add to product to cart.
+When working with this API, one must do the following...
+1. Create a demo user - the user will be needed when adding to cart - https://github.com/SirOlaoluwani/pstk-shopping-cart-test#create-demo-user
+2. Create atleast one category - the category will be needed when adding a product. 
+3. Create atleast one product  with the necessary information as described in the create product section - https://github.com/SirOlaoluwani/pstk-shopping-cart-test#create-product. The category ids are needed in an array because a product can belong to multiple categories. The system associates the category with the product via an association table - `product_category`.
+4. Add product to cart - the cart requires the product_id and the quantity, the quantity can be changed at any time. Checkout - https://github.com/SirOlaoluwani/pstk-shopping-cart-test#add-to-cart
 
 ## Usage
 
